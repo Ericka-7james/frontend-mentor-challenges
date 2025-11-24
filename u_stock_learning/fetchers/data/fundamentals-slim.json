@@ -20,7 +20,17 @@
         "priceToBook": 54.39591,
         "52WeekChange": 0.1658436,
         "heldPercentInstitutions": 0.64314,
-        "sharesOutstanding": 14776353000
+        "sharesOutstanding": 14776353000,
+        "forwardPE": 29.786013,
+        "enterpriseValue": 4069312167936,
+        "enterpriseToEbitda": 28.113,
+        "enterpriseToRevenue": 9.778,
+        "floatShares": 14750642146,
+        "sharesShort": 115557836,
+        "sharesShortPriorMonth": 110777598,
+        "shortRatio": 2.44,
+        "shortPercentOfFloat": 0.0078,
+        "sharesPercentSharesOut": 0.0078
       },
       "financial_data": {
         "currentPrice": 271.49,
@@ -31,6 +41,21 @@
         "profitMargins": 0.26915002,
         "debtToEquity": 152.411,
         "freeCashflow": 78862254080
+      },
+      "dividends": {
+        "dividendYield": 0.0038,
+        "dividendRate": 1.04,
+        "payoutRatio": 0.1367
+      },
+      "trading_snapshot": {
+        "marketCap": 4029017227264,
+        "regularMarketVolume": 59030832,
+        "averageVolume": 51066467,
+        "averageDailyVolume10Day": 46868060,
+        "regularMarketPreviousClose": 266.25,
+        "regularMarketOpen": 265.88,
+        "regularMarketDayHigh": 273.315,
+        "regularMarketDayLow": 265.82
       },
       "institution_ownership": [
         {
@@ -80,7 +105,17 @@
         "priceToBook": 9.666667,
         "52WeekChange": 0.12734306,
         "heldPercentInstitutions": 0.75626,
-        "sharesOutstanding": 7432377655
+        "sharesOutstanding": 7432377655,
+        "forwardPE": 25.203579,
+        "enterpriseValue": 3527337050112,
+        "enterpriseToEbitda": 21.193,
+        "enterpriseToRevenue": 12.005,
+        "floatShares": 7421526384,
+        "sharesShort": 52549516,
+        "sharesShortPriorMonth": 54926474,
+        "shortRatio": 2.59,
+        "shortPercentOfFloat": 0.0070999996,
+        "sharesPercentSharesOut": 0.0070999996
       },
       "financial_data": {
         "currentPrice": 472.12,
@@ -91,6 +126,21 @@
         "profitMargins": 0.35707,
         "debtToEquity": 33.154,
         "freeCashflow": 53327376384
+      },
+      "dividends": {
+        "dividendYield": 0.0077,
+        "dividendRate": 3.64,
+        "payoutRatio": 0.2361
+      },
+      "trading_snapshot": {
+        "marketCap": 3509346369536,
+        "regularMarketVolume": 31769248,
+        "averageVolume": 21532443,
+        "averageDailyVolume10Day": 25909050,
+        "regularMarketPreviousClose": 478.43,
+        "regularMarketOpen": 478.39,
+        "regularMarketDayHigh": 478.92,
+        "regularMarketDayLow": 468.27
       },
       "institution_ownership": [
         {
@@ -140,7 +190,16 @@
         "priceToBook": 9.354415,
         "52WeekChange": 0.768577,
         "heldPercentInstitutions": 0.60723,
-        "sharesOutstanding": 5407000000
+        "sharesOutstanding": 5407000000,
+        "forwardPE": 26.802948,
+        "enterpriseValue": 3561575677952,
+        "enterpriseToEbitda": 24.533,
+        "enterpriseToRevenue": 9.239,
+        "floatShares": 10797551600,
+        "sharesShort": 35835418,
+        "sharesShortPriorMonth": 35349968,
+        "shortRatio": 1.9,
+        "sharesPercentSharesOut": 0.0033000002
       },
       "financial_data": {
         "currentPrice": 299.65,
@@ -151,6 +210,21 @@
         "profitMargins": 0.32233003,
         "debtToEquity": 11.424,
         "freeCashflow": 47997751296
+      },
+      "dividends": {
+        "dividendYield": 0.0028,
+        "dividendRate": 0.84,
+        "payoutRatio": 0.0809
+      },
+      "trading_snapshot": {
+        "marketCap": 3617324793856,
+        "regularMarketVolume": 43670586,
+        "averageVolume": 23306334,
+        "averageDailyVolume10Day": 27251080,
+        "regularMarketPreviousClose": 289.97998,
+        "regularMarketOpen": 297.29,
+        "regularMarketDayHigh": 303.96,
+        "regularMarketDayLow": 294.36
       },
       "institution_ownership": [
         {

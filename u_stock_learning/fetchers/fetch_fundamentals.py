@@ -1,9 +1,13 @@
 """
-Fetch *slim* fundamentals, company profile, and institutional ownership
+Fetch *slim but richer* fundamentals, company profile, and institutional ownership
 for a list of symbols using yahooquery.
 
-This is a learning version of what your real u-stock data bot might do,
-but with a much smaller, analysis-focused schema.
+This version is tuned more for *day trading* use-cases, adding:
+
+  - valuation metrics (PE, EV/Revenue, EV/EBITDA)
+  - dividend info (yield, rate, payout ratio)
+  - liquidity & trading context (marketCap, volume, day range)
+  - short interest & float (for squeeze / risk analysis)
 """
 
 import json
@@ -23,16 +27,56 @@ def pick_keys(source: Dict[str, Any], keys: List[str]) -> Dict[str, Any]:
 
 def fetch_company_fundamentals_slim(symbols: List[str]) -> Dict[str, Any]:
     """
-    Fetch *slim* fundamentals & profile-like data for each symbol.
+    Fetch *slim but richer* fundamentals & profile-like data for each symbol.
 
     For each symbol we keep:
-      - company_profile: sector, industry, country, website, summary, employees
-      - key_stats: beta, bookValue, priceToBook, 52WeekChange, heldPercentInstitutions, sharesOutstanding
-      - financial_data: currentPrice, revenue, margins, leverage, free cash flow
-      - institution_ownership: top 5 holders (organization, pctHeld, position, value)
 
-    :param symbols: list of ticker strings, e.g. ["AAPL", "MSFT"]
-    :return: dict mapping symbol -> fundamentals payload (nested dict)
+      company_profile:
+        - sector, industry, country, website
+        - longBusinessSummary
+        - fullTimeEmployees
+
+      key_stats:
+        - beta
+        - bookValue, priceToBook
+        - 52WeekChange
+        - heldPercentInstitutions
+        - sharesOutstanding
+        - trailingPE, forwardPE
+        - enterpriseValue
+        - enterpriseToEbitda
+        - enterpriseToRevenue
+        - floatShares
+        - sharesShort, sharesShortPriorMonth
+        - shortRatio, shortPercentOfFloat
+        - sharesPercentSharesOut
+
+      financial_data:
+        - currentPrice
+        - totalRevenue
+        - revenueGrowth
+        - grossMargins, operatingMargins, profitMargins
+        - debtToEquity
+        - freeCashflow
+
+      dividends (from summary_detail):
+        - dividendYield
+        - dividendRate
+        - payoutRatio
+
+      trading_snapshot (from summary_detail):
+        - marketCap
+        - regularMarketVolume
+        - averageVolume
+        - averageDailyVolume10Day
+        - regularMarketPreviousClose
+        - regularMarketOpen
+        - regularMarketDayHigh
+        - regularMarketDayLow
+
+      institution_ownership:
+        - top 5 holders, with:
+          - organization, pctHeld, position, value
     """
     results: Dict[str, Any] = {}
 
@@ -61,7 +105,7 @@ def fetch_company_fundamentals_slim(symbols: List[str]) -> Dict[str, Any]:
             ],
         )
 
-        # --- Key statistics (slim) ---
+        # --- Key statistics (slim + valuation / EV / short interest) ---
         try:
             raw_key_stats = t.key_stats.get(symbol, {})  # type: ignore[union-attr]
         except Exception as e:
@@ -71,16 +115,30 @@ def fetch_company_fundamentals_slim(symbols: List[str]) -> Dict[str, Any]:
         payload["key_stats"] = pick_keys(
             raw_key_stats,
             [
+                # existing core stats
                 "beta",
                 "bookValue",
                 "priceToBook",
                 "52WeekChange",
                 "heldPercentInstitutions",
                 "sharesOutstanding",
+                # valuation + EV metrics
+                "trailingPE",
+                "forwardPE",
+                "enterpriseValue",
+                "enterpriseToEbitda",
+                "enterpriseToRevenue",
+                # float & short interest (day-trading relevant)
+                "floatShares",
+                "sharesShort",
+                "sharesShortPriorMonth",
+                "shortRatio",
+                "shortPercentOfFloat",
+                "sharesPercentSharesOut",
             ],
         )
 
-        # --- Financial data (slim) ---
+        # --- Financial data (quality & growth) ---
         try:
             raw_fin = t.financial_data.get(symbol, {})  # type: ignore[union-attr]
         except Exception as e:
@@ -98,6 +156,38 @@ def fetch_company_fundamentals_slim(symbols: List[str]) -> Dict[str, Any]:
                 "profitMargins",
                 "debtToEquity",
                 "freeCashflow",
+            ],
+        )
+
+        # --- Summary detail: dividends + trading snapshot (liquidity / today context) ---
+        try:
+            raw_summary = t.summary_detail.get(symbol, {})  # type: ignore[union-attr]
+        except Exception as e:
+            print(f"  Warning: error fetching summary_detail for {symbol}: {e}")
+            raw_summary = {}
+
+        # Dividend-related fields
+        payload["dividends"] = pick_keys(
+            raw_summary,
+            [
+                "dividendYield",
+                "dividendRate",
+                "payoutRatio",
+            ],
+        )
+
+        # Liquidity & intraday context (great for day trading filters)
+        payload["trading_snapshot"] = pick_keys(
+            raw_summary,
+            [
+                "marketCap",
+                "regularMarketVolume",
+                "averageVolume",
+                "averageDailyVolume10Day",
+                "regularMarketPreviousClose",
+                "regularMarketOpen",
+                "regularMarketDayHigh",
+                "regularMarketDayLow",
             ],
         )
 
@@ -143,6 +233,8 @@ def save_fundamentals_to_json(data: Dict[str, Any], filename: str = "fundamental
           "company_profile": { ... },
           "key_stats": { ... },
           "financial_data": { ... },
+          "dividends": { ... },
+          "trading_snapshot": { ... },
           "institution_ownership": [ ... ]
         },
         "MSFT": { ... }
